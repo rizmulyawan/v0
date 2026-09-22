@@ -1,0 +1,91 @@
+"$schema" = "https://conductor.build/schemas/settings.repo.schema.json"
+
+# Local project overrides for Conductor.
+# This file is gitignored and only applies on this machine.
+# See: https://www.conductor.build/docs/reference/settings
+# See: https://www.conductor.build/docs/reference/scripts
+
+[scripts]
+# Setup runs after Conductor creates a workspace (git checkout + file copy).
+# Use it to install dependencies, generate files, or create workspace-specific resources.
+# Uncomment and adapt ONE of the examples below for your project type:
+
+# Node.js (npm)
+# setup = "npm ci"
+# Node.js (pnpm)
+# setup = "pnpm install --frozen-lockfile"
+# Node.js (yarn)
+# setup = "yarn install --frozen-lockfile"
+# Node.js (bun)
+# setup = "bun install"
+# Python (uv)
+# setup = "uv sync"
+# Python (pip)
+# setup = "pip install -r requirements.txt"
+# Go
+# setup = "go mod download"
+# Rust
+# setup = "cargo fetch"
+# Bun/Node with workspace-specific .env copy
+# setup = """
+#   cp -n "$CONDUCTOR_ROOT_PATH/.env.example" .env 2>/dev/null || true
+#   pnpm install --frozen-lockfile
+# """
+
+# Run scripts start your app/server/tests. Conductor allocates CONDUCTOR_PORT..CONDUCTOR_PORT+9.
+# Define named run scripts under [scripts.run.*] for multiple commands.
+# Use CONDUCTOR_PORT for any local server so multiple workspaces can run concurrently.
+
+run_mode = "concurrent"
+
+[scripts.run.dev]
+# Default development server. Uncomment and adapt for your project:
+# Node.js (Vite/Next/Remix/etc.)
+# command = "npm run dev -- --port $CONDUCTOR_PORT"
+# command = "pnpm dev -- --port $CONDUCTOR_PORT"
+# Python (FastAPI/Flask/Django)
+# command = "uv run uvicorn main:app --port $CONDUCTOR_PORT --reload"
+# command = "python manage.py runserver $CONDUCTOR_PORT"
+# Go
+# command = "go run . -port $CONDUCTOR_PORT"
+# Rust (Axum/Actix)
+# command = "cargo run -- --port $CONDUCTOR_PORT"
+# Generic
+# command = "./dev-server --port $CONDUCTOR_PORT"
+default = true
+icon = "play"
+available_in = ["local"]
+
+# Example additional run scripts (uncomment as needed):
+#
+# [scripts.run.test]
+# command = "npm run test:watch"
+# icon = "test-tube"
+# available_in = ["local", "cloud"]
+#
+# [scripts.run.worker]
+# command = "npm run worker:dev"
+# icon = "server"
+# available_in = ["local"]
+#
+# [scripts.run.lint]
+# command = "npm run lint"
+# icon = "bug"
+# available_in = ["local", "cloud"]
+
+# Archive runs before Conductor archives a workspace.
+# Use it to clean up resources created outside the workspace directory.
+# Uncomment and adapt if your project creates external resources:
+
+# archive = """
+#   # Example: remove workspace-specific app support directory
+#   rm -rf "$HOME/Library/Application Support/com.example.myapp.dev.$CONDUCTOR_WORKSPACE_NAME" 2>/dev/null || true
+#   # Example: stop docker compose stack for this workspace
+#   docker compose -p "myapp-$CONDUCTOR_WORKSPACE_NAME" down -v 2>/dev/null || true
+# """
+
+# Example: copy gitignored files from repo root to each workspace
+# (Alternative to handling this in setup script)
+# [files_to_copy]
+# ".env.local" = ".env.local"
+# ".env.development.local" = ".env.development.local"
