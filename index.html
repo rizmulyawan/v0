@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Weeknd · Jakarta Itinerary</title>
+<style>
+  :root {
+    --bg: #0b0b10;
+    --panel: #14141c;
+    --line: #262633;
+    --text: #f2f2f5;
+    --muted: #9a9aa8;
+    --red: #e01130;
+    --red-soft: rgba(224, 17, 48, .16);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-font-smoothing: antialiased; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+    background:
+      radial-gradient(1100px 480px at 85% -10%, rgba(224,17,48,.28), transparent 60%),
+      radial-gradient(800px 400px at -10% 30%, rgba(224,17,48,.10), transparent 55%),
+      var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 48px 20px 80px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+
+  header { margin-bottom: 28px; }
+  .eyebrow {
+    margin: 0 0 6px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--red);
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(2.6rem, 8vw, 4.2rem);
+    font-weight: 800;
+    letter-spacing: -.03em;
+    line-height: 1.02;
+    text-transform: uppercase;
+  }
+  .sub { margin: 10px 0 0; color: var(--muted); font-size: 16px; }
+  .sub b { color: var(--text); font-weight: 600; }
+
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 24px;
+  }
+  .meta .field {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 12px;
+  }
+  .meta label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .meta input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 0;
+  }
+  .meta input::placeholder { color: #5b5b6b; font-weight: 500; }
+  .meta input[type="time"] { color-scheme: dark; }
+
+  .countdown {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .countdown div {
+    flex: 1;
+    background: var(--red-soft);
+    border: 1px solid rgba(224,17,48,.35);
+    border-radius: 12px;
+    text-align: center;
+    padding: 12px 4px 10px;
+  }
+  .countdown strong {
+    display: block;
+    font-size: clamp(1.4rem, 5vw, 2rem);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.02em;
+  }
+  .countdown span {
+    font-size: 10px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .countdown.live div { animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 50% { border-color: rgba(224,17,48,.9); } }
+  .countdown.done { display: block; text-align: center; padding: 16px;
+    background: var(--red-soft); border: 1px solid rgba(224,17,48,.35); border-radius: 12px;
+    font-weight: 800; font-size: 18px; letter-spacing: .08em; text-transform: uppercase; }
+
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .bar {
+    flex: 1;
+    height: 8px;
+    background: var(--line);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ff2d55, var(--red));
+    border-radius: 99px;
+    transition: width .35s ease;
+  }
+  .progress-row .count { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .progress-row .count b { color: var(--text); }
+  .reset {
+    background: none;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    border-radius: 99px;
+    padding: 4px 10px;
+    cursor: pointer;
+  }
+  .reset:hover { color: var(--text); border-color: var(--muted); }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 20px 22px;
+    margin-top: 16px;
+  }
+  .card h2 {
+    margin: 0 0 6px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card h2 .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--red);
+    color: #fff;
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+  .card h2 em { font-style: normal; color: var(--muted); font-weight: 500; letter-spacing: .04em; text-transform: none; font-size: 12px; }
+
+  ul.list { list-style: none; margin: 8px 0 0; padding: 0; }
+  ul.list li { border-top: 1px solid var(--line); }
+  ul.list li:first-child { border-top: none; }
+  ul.list label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 2px;
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+  ul.list input { position: absolute; opacity: 0; pointer-events: none; }
+  .box {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    border: 2px solid var(--line);
+    border-radius: 6px;
+    position: relative;
+    transition: all .15s ease;
+  }
+  label:hover .box { border-color: var(--muted); }
+  input:checked + .box { background: var(--red); border-color: var(--red); }
+  input:checked + .box::after {
+    content: "";
+    position: absolute;
+    left: 5px; top: 1px;
+    width: 5px; height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  input:checked ~ .txt { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(224,17,48,.7); }
+
+  footer {
+    margin-top: 26px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  footer b { color: var(--red); }
+
+  @media (max-width: 540px) {
+    .meta { grid-template-columns: 1fr; }
+    body { padding-top: 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">After Hours Til Dawn · Jakarta</p>
+    <h1>The Weeknd</h1>
+    <p class="sub"><b>Sunday, 27 September 2026</b> · Jakarta, Indonesia</p>
+
+    <div class="meta">
+      <div class="field">
+        <label for="venue">Venue</label>
+        <input id="venue" type="text" placeholder="Add venue (e.g. JIS)" />
+      </div>
+      <div class="field">
+        <label for="gateTime">Gate opens</label>
+        <input id="gateTime" type="time" value="17:00" />
+      </div>
+      <div class="field">
+        <label for="showTime">Show starts</label>
+        <input id="showTime" type="time" value="19:00" />
+      </div>
+    </div>
+
+    <div class="countdown" id="countdown">
+      <div><strong id="cdD">--</strong><span>days</span></div>
+      <div><strong id="cdH">--</strong><span>hrs</span></div>
+      <div><strong id="cdM">--</strong><span>min</span></div>
+      <div><strong id="cdS">--</strong><span>sec</span></div>
+    </div>
+
+    <div class="progress-row">
+      <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+      <span class="count"><b id="doneCount">0</b> / <span id="totalCount">0</span> done</span>
+      <button class="reset" id="resetBtn" type="button">reset</button>
+    </div>
+  </header>
+
+  <section class="card">
+    <h2><span class="num">1</span> This week <em>Wed – Sat</em></h2>
+    <ul class="list">
+      <li><label><input type="checkbox" data-key="t1"><span class="box"></span><span class="txt">Screenshot the ticket + save offline — note your pintu/block/seat</span></label></li>
+      <li><label><input type="checkbox" data-key="t2"><span class="box"></span><span class="txt">Check gate time, bag policy &amp; prohibited items in the ticketing app</span></label></li>
+      <li><label><input type="checkbox" data-key="t3"><span class="box"></span><span class="txt">Plan the fit — red or black After Hours vibe, comfy shoes for standing</span></label></li>
+      <li><label><input type="checkbox" data-key="t4"><span class="box"></span><span class="txt">Charge powerbank + cables to 100%</span></label></li>
+      <li><label><input type="checkbox" data-key="t5"><span class="box"></span><span class="txt">Sort transport home — Grab/Gojek pickup point, cash for toll</span></label></li>
+      <li><label><input type="checkbox" data-key="t6"><span class="box"></span><span class="txt">Check the forecast — pack a compact poncho if rain is coming</span></label></li>
+      <li><label><input type="checkbox" data-key="t7"><span class="box"></span><span class="txt">Withdraw cash for merch, food &amp; lockers</span></label></li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2><span class="num">2</span> Saturday night <em>prep</em></h2>
+    <ul class="list">
+      <li><label><input type="checkbox" data-key="s1"><span class="box"></span><span class="txt">Pack bag: ticket, ID (KTP/passport), powerbank, earplugs, water</span></label></li>
+      <li><label><input type="checkbox" data-key="s2"><span class="box"></span><span class="txt">Lay out the outfit, set two alarms for Sunday</span></label></li>
+      <li><label><input type="checkbox" data-key="s3"><span class="box"></span><span class="txt">Eat well, hydrate, warm up the vocals</span></label></li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2><span class="num">3</span> Sunday — show day</h2>
+    <ul class="list">
+      <li><label><input type="checkbox" data-key="d1"><span class="box"></span><span class="txt">Real meal before leaving + bathroom stop on the way</span></label></li>
+      <li><label><input type="checkbox" data-key="d2"><span class="box"></span><span class="txt">Final check: ticket screenshots, ID, phone at 100%</span></label></li>
+      <li><label><input type="checkbox" data-key="d3"><span class="box"></span><span class="txt">Leave early — beat Jakarta traffic, aim to arrive by gate time</span></label></li>
+      <li><label><input type="checkbox" data-key="d4"><span class="box"></span><span class="txt">Pin the meet-up spot in the group chat</span></label></li>
+      <li><label><input type="checkbox" data-key="d5"><span class="box"></span><span class="txt">On arrival: find lockers / check the small-bag-only rule</span></label></li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2><span class="num">4</span> Showtime</h2>
+    <ul class="list">
+      <li><label><input type="checkbox" data-key="sh1"><span class="box"></span><span class="txt">Earplugs in, low-power mode on, data ready</span></label></li>
+      <li><label><input type="checkbox" data-key="sh2"><span class="box"></span><span class="txt">Water between sets — don't lose your friends in the crowd</span></label></li>
+      <li><label><input type="checkbox" data-key="sh3"><span class="box"></span><span class="txt">Blinding Lights → Save Your Tears → shades on for the encore</span></label></li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2><span class="num">5</span> After party's over</h2>
+    <ul class="list">
+      <li><label><input type="checkbox" data-key="a1"><span class="box"></span><span class="txt">Walk to the pre-planned pickup point (skip the surge at the gate)</span></label></li>
+      <li><label><input type="checkbox" data-key="a2"><span class="box"></span><span class="txt">Send the "home safe" message to the group</span></label></li>
+      <li><label><input type="checkbox" data-key="a3"><span class="box"></span><span class="txt">Post the recap while it's still hot</span></label></li>
+    </ul>
+  </section>
+
+  <footer>Until dawn. <b>✕ O</b> — your checks save automatically in this browser.</footer>
+</div>
+
+<script>
+(function () {
+  var STORAGE = "weeknd-jakarta-itinerary-v1";
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(STORAGE) || "{}"); } catch (e) { state = {}; }
+  function save() { localStorage.setItem(STORAGE, JSON.stringify(state)); }
+
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[type="checkbox"]'));
+  var doneCount = document.getElementById("doneCount");
+  var totalCount = document.getElementById("totalCount");
+  var barFill = document.getElementById("barFill");
+
+  boxes.forEach(function (box) {
+    var key = box.getAttribute("data-key");
+    if (state[key] === true) box.checked = true;
+    box.addEventListener("change", function () {
+      state[key] = box.checked;
+      save();
+      renderProgress();
+    });
+  });
+
+  function renderProgress() {
+    var done = boxes.filter(function (b) { return b.checked; }).length;
+    doneCount.textContent = done;
+    totalCount.textContent = boxes.length;
+    barFill.style.width = boxes.length ? (done / boxes.length) * 100 + "%" : "0%";
+  }
+
+  document.getElementById("resetBtn").addEventListener("click", function () {
+    boxes.forEach(function (b) { b.checked = false; state[b.getAttribute("data-key")] = false; });
+    save();
+    renderProgress();
+  });
+
+  // Editable details, persisted
+  ["venue", "gateTime", "showTime"].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (state[id] !== undefined && state[id] !== null && state[id] !== "") {
+      el.value = state[id];
+    }
+    el.addEventListener("input", function () { state[id] = el.value; save(); renderCountdown(); });
+  });
+
+  // Countdown — show date is fixed: Sun 27 Sep 2026, time from the "show starts" field (WIB / UTC+7)
+  var cd = document.getElementById("countdown");
+  var cdD = document.getElementById("cdD"), cdH = document.getElementById("cdH");
+  var cdM = document.getElementById("cdM"), cdS = document.getElementById("cdS");
+
+  function target() {
+    var t = document.getElementById("showTime").value || "19:00";
+    return new Date("2026-09-27T" + t + ":00+07:00");
+  }
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+
+  function renderCountdown() {
+    var diff = target() - new Date();
+    if (diff <= 0) {
+      cd.classList.add("done");
+      cd.textContent = "It's time — enjoy the show 🖤";
+      return;
+    }
+    cd.classList.remove("done");
+    cd.innerHTML = '<div><strong id="cdD">--</strong><span>days</span></div>' +
+                   '<div><strong id="cdH">--</strong><span>hrs</span></div>' +
+                   '<div><strong id="cdM">--</strong><span>min</span></div>' +
+                   '<div><strong id="cdS">--</strong><span>sec</span></div>';
+    cdD = document.getElementById("cdD"); cdH = document.getElementById("cdH");
+    cdM = document.getElementById("cdM"); cdS = document.getElementById("cdS");
+
+    var s = Math.floor(diff / 1000);
+    var d = Math.floor(s / 86400); s -= d * 86400;
+    var h = Math.floor(s / 3600); s -= h * 3600;
+    var m = Math.floor(s / 60); s -= m * 60;
+    cdD.textContent = pad(d); cdH.textContent = pad(h);
+    cdM.textContent = pad(m); cdS.textContent = pad(s);
+    cd.classList.toggle("live", d === 0);
+  }
+
+  renderProgress();
+  renderCountdown();
+  setInterval(renderCountdown, 1000);
+})();
+</script>
+</body>
+</html>
